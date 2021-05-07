@@ -1,0 +1,78 @@
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>구구단</title>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        class GuGuDan extends React.Component {
+            //constructor, this.state의 this부분 제거함.
+            state = {
+                first: Math.ceil(Math.random() * 9),
+                second: Math.ceil(Math.random() * 9),
+                value: '',
+                result: '',
+            };
+
+            //JSX - JS를 섞어쓰지않기 권장 >> 자바스크립트를 메소드로 만들어서 사용
+            //setState할때마다 render()가 새로 실행이되기때문에 render()밖으로 빼줌
+            //직접 만들어준 함수들은 ()=> 화살표함수 사용해야함. render()와같은 함수들은 화살표함수X
+            onSubmit = (e) => {
+                e.preventDefault();
+                if (parseInt(this.state.value) === this.state.first * this.state.second) {
+                    this.setState((prevState) => {
+                        //prevState에 이전상태값이 들어가있음 / 이전상태값을 다음상태값에 활용할수있음(이번예제에서는 활용 X)
+                        //setState안에 return을하는 함수를넣어줌(새로운 state를 리턴하는 함수)
+                        return {
+                            result: '정답: ' + prevState.value,
+                            first: Math.ceil(Math.random() * 9),
+                            second: Math.ceil(Math.random() * 9),
+                            value: '',
+                        };
+                    });
+                    this.input.focus();
+                } else {
+                    this.setState({
+                        result: '땡',
+                        value: '',
+                    });
+                    this.input.focus();
+                }
+            };
+
+            onChange = (e) => {
+                this.setState({ value: e.target.value }); //입력받은값 넣어줌. setstate의 value로
+            };
+
+            input;
+
+            onRefInput = (c) => { this.input = c; };
+
+            render() {
+                return (
+                    //쓸데없는 div태그를 없애줌
+                    <React.Fragment>
+                        <div>{this.state.first} 곱하기 {this.state.second}는?</div>
+                        <form onSubmit={this.onSubmit}>
+                            <input ref={this.onRefInput} type="number" value={this.state.value} onChange={this.onChange} />
+                            <button>입력</button>
+                        </form>
+                        <div>{this.state.result}</div>
+                    </React.Fragment>
+                );
+            }
+        }
+
+    </script>
+    <script type="text/babel">
+        ReactDOM.render(<GuGuDan />, document.querySelector('#root'));
+    </script>
+</body>
+
+</html>

@@ -195,7 +195,7 @@ function calculateWinner(squares) {
 
 // ========================================
 
-ReactDOM.render(
+ReactDOM.render( //ReactDOM.render 함수 첫번째 파라미터(<Game/>를 두번째 파라미터 document.getElementById('root') 에 렌더링해라
     <Game />,
     document.getElementById('root')
 );
